@@ -14,6 +14,10 @@
 void setup() {
   // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
+  delay(2000); // wait until ADC is ready?
+  Serial.println();
+  Serial.print("Pulse detect @ gpio ");
+  Serial.println(A0);
 }
 
 const int msSampleTime = 5;                 //amount of ms to repeat loop
@@ -40,7 +44,9 @@ void loop() {
     if ((millis() - highLastMs ) > minHighPulseTimeoutWidth) {
       highLastMs  = millis();
       if (pulseCounts != 0) {
-        Serial.print("total pulses: ");
+        if (pulseCounts == 10) {
+          pulseCounts = 0; //print zero if 10 pulses (equals zero on the dialer)
+        }
         Serial.println(pulseCounts);
       }
       pulseCounts = 0;

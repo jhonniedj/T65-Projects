@@ -18,9 +18,10 @@ uint8_t analogPin = A0;
 void setup()
 {
   Serial.begin(9600);
-  delay(2000); // wait until ADC is ready
-  Serial.print("Start @ pin ");
-  Serial.println(analogPin);
+  delay(2000); // wait until ADC is ready?
+  Serial.println();
+  Serial.print("DTMF detect @ gpio ");
+  Serial.println(A0);
 
   dtmf.begin(analogPin);
 }
