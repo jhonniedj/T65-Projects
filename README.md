@@ -1,10 +1,11 @@
 # T65 Projects
  
-todo:
+TODO:
 - interrupt voor dtmf/sample detect
 - dfplayer mini aansturen
 - on-hook off-hook detectie met SLIC print
 - belspanning genereren
 - aardetoets uitlezen
+- programma's samenvoegen
 
-- samenvoegen
+- In kicad(?) PCB ontwerpen
