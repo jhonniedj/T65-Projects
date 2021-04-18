@@ -21,6 +21,10 @@
 */
 
 void setup() {
+  pinMode(D6, OUTPUT);
+  pinMode(D7, OUTPUT);
+  digitalWrite(D6, LOW); //pin 4 = Ringing Mode. Sets bias conditions during ringing. Must be set to logic (H) during ringing. Logic (L) for other modes.
+  digitalWrite(D7, HIGH);  //pin 3 = Forward/Reverse. A logic (L) will reverse the Tip and Ring voltage polarities. F/R is toggled to produce the ringing output.
   //start serial connection
   Serial.begin(9600);
   //configure pin 2 as an input and enable the internal pull-up resistor

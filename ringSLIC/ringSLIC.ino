@@ -3,12 +3,48 @@ void setup() {
   pinMode(D6, OUTPUT);
   pinMode(D7, OUTPUT);
   digitalWrite(D6, LOW);
-  digitalWrite(D7, LOW);
+  digitalWrite(D7, HIGH);
   ring(true);
 }
 
+
+// On and Off Times (as int, max=32secs)
+const unsigned int onTime = 1000;
+const unsigned int offTime = 4000;
+
+// Tracks the last time event fired
+unsigned long previousLoopMillis = 0;
+
+// Interval is how long we wait
+int loopInterval = onTime;
+
+// Used to track if LED should be on or off
+boolean ringState = true;
+
 void loop() {
-  ringLoop();
+  unsigned long currentLoopMillis = millis();
+
+  // Compare to previous capture to see if enough time has passed
+  if ((unsigned long)(currentLoopMillis - previousLoopMillis) >= loopInterval) {
+    // Change wait interval, based on current LED state
+    if (ringState) {
+      // LED is currently on, set time to stay off
+      loopInterval = offTime;
+    } else {
+      // LED is currently off, set time to stay on
+      loopInterval = onTime;
+    }
+    // Toggle the LED's state, Fancy, eh!?
+    ringState = !(ringState);
+
+    // Save the current time to compare "later"
+    previousLoopMillis = currentLoopMillis;
+  }
+
+  if (ringState) {
+    ringLoop();
+  }
+
 }
 
 int bellState = LOW;

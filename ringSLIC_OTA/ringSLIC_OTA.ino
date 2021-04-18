@@ -26,7 +26,7 @@ void setup() {
   // ArduinoOTA.setPort(8266);
 
   // Hostname defaults to esp8266-[ChipID]
-     ArduinoOTA.setHostname("wemosPhone");
+  ArduinoOTA.setHostname("wemosPhone");
 
   // No authentication by default
   // ArduinoOTA.setPassword("admin");
@@ -76,10 +76,11 @@ void setup() {
   pinMode(D7, OUTPUT);
   digitalWrite(D6, LOW);
   digitalWrite(D7, LOW);
-  ring(true);
+  ring(false);
 }
 
 int bellState = LOW;
+unsigned long loopMillis = 0;
 unsigned long previousMillis = 0;
 const long interval = 25; //20ms = 25 Hz //25ms = 20 Hz
 bool ringActive = false;
@@ -87,14 +88,20 @@ bool ringActive = false;
 void ringLoop() {
   if (ringActive) {
     unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis >= interval) {
-      previousMillis = currentMillis;
-      if (bellState == LOW) {
-        bellState = HIGH;  // Note that this switches the BELL *off*
-      } else {
-        bellState = LOW;  // Note that this switches the BELL *on*
+    if (currentMillis - loopMillis >= 1000) {
+      loopMillis = currentMillis;
+      if (currentMillis - previousMillis >= interval) {
+        previousMillis = currentMillis;
+        if (bellState == LOW) {
+          bellState = HIGH;  // Note that this switches the BELL *off*
+        } else {
+          bellState = LOW;  // Note that this switches the BELL *on*
+        }
+        digitalWrite(D7, bellState);
       }
-      digitalWrite(D7, bellState);
+    }
+    if (currentMillis - loopMillis >= 4000) {
+      loopMillis = 0;
     }
   }
 }
